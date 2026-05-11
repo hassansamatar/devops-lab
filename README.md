@@ -1,18 +1,15 @@
-Great — this is already a solid DevOps README. I’ve cleaned it up, removed duplication, fixed structure, and added your **SSH “master key” setup properly at the end** so it reads like a professional engineering document.
-
-You can copy-paste this directly into your `README.md` 👇
 
 ---
 
-# 🚀 Azure DevOps Setup Guide (WSL + Azure CLI + Git + SSH)
+# 📘 DevOps Lab — Azure Terraform Setup Guide (WSL + Azure CLI + Terraform)
 
-This document provides a clean, step-by-step guide to set up a complete Azure DevOps environment using:
+This document provides a complete step-by-step guide to set up a working **Azure DevOps Infrastructure-as-Code (IaC) environment** using:
 
 * Windows Subsystem for Linux (WSL)
-* Ubuntu 24.04 LTS
+* Ubuntu
 * Azure CLI
+* Terraform
 * Git + GitHub
-* SSH authentication
 
 ---
 
@@ -28,29 +25,21 @@ wsl --install
 
 * Installs WSL2
 * Enables Virtual Machine Platform
-* Installs Linux support
-* Requires restart
+* Installs default Linux environment
+
+👉 Restart your computer after installation
 
 ---
 
-# 🔄 2. Restart Windows
+# 🐧 2. Install Ubuntu (WSL Linux Distribution)
 
-After installation:
-
-* Restart your computer
-* This activates WSL features
-
----
-
-# 🐧 3. Install Ubuntu (Recommended)
-
-Check available distributions:
+List available distributions:
 
 ```bash
 wsl --list --online
 ```
 
-Install Ubuntu 24.04:
+Install Ubuntu 24.04 LTS:
 
 ```bash
 wsl --install -d Ubuntu-24.04
@@ -58,34 +47,36 @@ wsl --install -d Ubuntu-24.04
 
 ---
 
-# 👤 4. Create Linux User
+# 👤 3. Create Linux User
 
-On first launch:
+On first launch of Ubuntu:
 
 * Create username (e.g. `hassan`)
-* Set Linux password
+* Set Linux password (used for `sudo`)
 
 ---
 
-# 🖥️ 5. Open WSL
+# 🖥️ 4. Open WSL Terminal
+
+Start Ubuntu:
 
 ```bash
 wsl
 ```
 
-or open Ubuntu directly.
+Or open “Ubuntu” from Windows start menu.
 
 ---
 
-# ☁️ 6. Install Azure CLI
+# ☁️ 5. Install Azure CLI
 
-Inside WSL:
+Inside WSL Ubuntu:
 
 ```bash
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
-Verify:
+Verify installation:
 
 ```bash
 az version
@@ -93,7 +84,9 @@ az version
 
 ---
 
-# 🔐 7. Azure Login (MFA Enabled)
+# 🔐 6. Login to Azure (Device Login)
+
+Use device code authentication:
 
 ```bash
 az login --use-device-code
@@ -101,14 +94,14 @@ az login --use-device-code
 
 Steps:
 
-* Open [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin)
-* Enter code
-* Login with Azure account
-* Complete MFA
+1. Open: [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin)
+2. Enter the code shown in terminal
+3. Sign in with Azure account
+4. Select subscription
 
 ---
 
-# 🔄 8. Set Active Subscription
+# 🔄 7. Set Active Subscription
 
 ```bash
 az account set --subscription <SUBSCRIPTION_ID>
@@ -122,7 +115,7 @@ az account show
 
 ---
 
-# 🧱 9. Create Resource Group
+# 🧱 8. Create Azure Resource Group (CLI)
 
 ```bash
 az group create \
@@ -138,155 +131,179 @@ az group show --name dev-rg
 
 ---
 
-# 📊 10. Verify Azure Setup
+# ⚙️ 9. Install Terraform (Ubuntu WSL)
+
+Add HashiCorp repository:
 
 ```bash
-az account show
-az group list --output table
+sudo apt update && sudo apt install -y gnupg software-properties-common curl
+
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 ```
 
----
-
-# 🧠 Setup Summary
-
-✔ WSL Ubuntu installed
-✔ Azure CLI installed
-✔ MFA login configured
-✔ Active subscription selected
-✔ Resource group created
-
----
-
-# 🚀 Next Steps
-
-## 🖥️ Infrastructure
-
-* Virtual Machines
-* Storage Accounts
-* Networking (VNet, Subnets)
-
-## ⚙️ DevOps Tools
-
-* Git + GitHub
-* Terraform (Infrastructure as Code)
-* Docker in WSL
-
-## 🔐 Advanced Azure
-
-* Service Principal authentication
-* Azure Key Vault
-* CI/CD pipelines (GitHub Actions)
-
----
-
-# 🔐 11. SSH Setup (GitHub Master Key Setup)
-
-This ensures passwordless Git access from WSL.
-
----
-
-## 📁 Check Windows SSH keys
-
-```powershell
-dir $env:USERPROFILE\.ssh
-```
-
-You should see:
-
-* `id_rsa`
-* `id_rsa.pub`
-
----
-
-## 📂 Copy SSH key into WSL
+Install Terraform:
 
 ```bash
-mkdir -p ~/.ssh
-cp /mnt/c/Users/HP/.ssh/id_rsa* ~/.ssh/
+sudo apt update && sudo apt install terraform -y
+```
+
+Verify:
+
+```bash
+terraform version
 ```
 
 ---
 
-## 🔐 Fix permissions
+# 📁 10. Terraform Project Structure
 
-```bash
-chmod 600 ~/.ssh/id_rsa
-chmod 644 ~/.ssh/id_rsa.pub
-```
-
----
-
-## 🚀 Start SSH agent
-
-```bash
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa
-```
-
----
-
-## 🌐 Add SSH key to GitHub
-
-Copy key:
-
-```bash
-cat ~/.ssh/id_rsa.pub
-```
-
-Add it here:
-
-[GitHub SSH Keys](https://github.com/settings/keys?utm_source=chatgpt.com)
-
----
-
-## 🔗 Switch Git to SSH
-
-```bash
-git remote set-url origin git@github.com:hassansamatar/devops-lab.git
-```
-
----
-
-## 🧪 Test connection
-
-```bash
-ssh -T git@github.com
-```
-
-Expected:
+Final structure:
 
 ```text
-Hi hassansamatar! You've successfully authenticated.
+terraform/
+└── environments/
+    └── dev/
+        ├── main.tf
+        ├── provider.tf
+        ├── variables.tf
+        └── outputs.tf
 ```
 
 ---
 
-# 🎯 Final Result
+# ☁️ 11. Terraform Provider Configuration
 
-You now have:
+`provider.tf`
 
-✔ WSL DevOps environment
-✔ Azure CLI configured
-✔ GitHub SSH authentication
-✔ Terraform-ready workspace
-✔ Clean DevOps structure
+```hcl
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+```
 
 ---
 
-# 🚀 Ready for Terraform
+# 🧱 12. First Azure Resource (Resource Group)
 
-Next phase:
+`main.tf`
 
-👉 Terraform backend (Azure Storage state)
-👉 First Azure resource deployment
-👉 GitHub Actions CI/CD pipeline
+```hcl
+resource "azurerm_resource_group" "dev_rg" {
+  name     = "dev-rg-terraform"
+  location = "westeurope"
+}
+```
 
 ---
 
-If you want, I can next help you:
+# 📤 13. Outputs (Optional but recommended)
 
-👉 structure your Terraform repo like production (modules/environments/backend)
-👉 or deploy your first real Azure infrastructure step-by-step
-👉 or build full CI/CD pipeline for Terraform
+`outputs.tf`
 
-Just say 👍
+```hcl
+output "resource_group_name" {
+  value = azurerm_resource_group.dev_rg.name
+}
+```
+
+---
+
+# 🚀 14. Terraform Workflow
+
+Initialize project:
+
+```bash
+terraform init
+```
+
+Validate configuration:
+
+```bash
+terraform validate
+```
+
+Preview changes:
+
+```bash
+terraform plan
+```
+
+Apply infrastructure:
+
+```bash
+terraform apply
+```
+
+Confirm:
+
+```text
+yes
+```
+
+---
+
+# 🎉 15. Successful Deployment Output
+
+```text
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+```
+
+Azure Resource Created:
+
+* Resource Group: `dev-rg-terraform`
+
+---
+
+# 🧠 16. Key Concepts Learned
+
+* Infrastructure as Code (IaC)
+* Terraform state management
+* Azure CLI authentication
+* Resource provisioning automation
+* WSL-based DevOps environment
+
+---
+
+# ⚠️ 17. Important Notes
+
+* Do NOT manually modify Terraform-managed resources
+* Always use Terraform for infrastructure changes
+* Keep state file secure (future improvement: remote backend)
+* Use consistent Azure region (`westeurope` for Norway)
+
+---
+
+# 🚀 18. Next Steps (Recommended Learning Path)
+
+## 🔐 Terraform Advanced Setup
+
+* Azure Storage remote backend (state management)
+* Workspaces (dev / prod environments)
+
+## ⚙️ Infrastructure Expansion
+
+* Virtual Networks (VNet)
+* Virtual Machines (VMs)
+* Key Vault (secrets management)
+
+## 🔁 CI/CD Integration
+
+* GitHub Actions for Terraform automation
+* Azure DevOps pipelines
+
+---
+
+# 🏁 End of Setup Guide
+
+This environment is now fully ready for **real-world Azure DevOps and Terraform workflows** 🚀

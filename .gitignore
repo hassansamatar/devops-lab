@@ -1,4 +1,6 @@
-# Terraform state files (VERY IMPORTANT)
+# -----------------------------
+# Terraform state files (CRITICAL)
+# -----------------------------
 *.tfstate
 *.tfstate.*
 *.backup
@@ -6,9 +8,8 @@
 # Terraform crash logs
 crash.log
 
-# Terraform directories
+# Terraform directories (local cache only)
 .terraform/
-.terraform.lock.hcl
 
 # CLI config files
 terraform.rc
@@ -19,17 +20,24 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Sensitive variable files (if used later)
+# Sensitive variable files
 *.tfvars
 *.tfvars.json
 
-# IDE / editor files
+# -----------------------------
+# IDE / Editor files
+# -----------------------------
 .vscode/
 .idea/
 
+# -----------------------------
 # OS files
+# -----------------------------
 .DS_Store
 Thumbs.db
 
+# -----------------------------
 # Logs
+# -----------------------------
 *.log
+.terraform/

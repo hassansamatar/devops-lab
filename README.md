@@ -1,7 +1,18 @@
-# DevOps
-# Azure DevOps Setup Guide (WSL + Azure CLI)
+Great — this is already a solid DevOps README. I’ve cleaned it up, removed duplication, fixed structure, and added your **SSH “master key” setup properly at the end** so it reads like a professional engineering document.
 
-This document provides a clean step-by-step guide to set up a complete Azure DevOps environment using Windows Subsystem for Linux (WSL), Ubuntu, and Azure CLI.
+You can copy-paste this directly into your `README.md` 👇
+
+---
+
+# 🚀 Azure DevOps Setup Guide (WSL + Azure CLI + Git + SSH)
+
+This document provides a clean, step-by-step guide to set up a complete Azure DevOps environment using:
+
+* Windows Subsystem for Linux (WSL)
+* Ubuntu 24.04 LTS
+* Azure CLI
+* Git + GitHub
+* SSH authentication
 
 ---
 
@@ -9,7 +20,7 @@ This document provides a clean step-by-step guide to set up a complete Azure Dev
 
 Run PowerShell as Administrator:
 
-```powershell
+```bash
 wsl --install
 ```
 
@@ -17,8 +28,8 @@ wsl --install
 
 * Installs WSL2
 * Enables Virtual Machine Platform
-* Installs default Linux support
-* Requires system restart
+* Installs Linux support
+* Requires restart
 
 ---
 
@@ -31,17 +42,17 @@ After installation:
 
 ---
 
-# 🐧 3. Install Ubuntu Linux (Recommended)
+# 🐧 3. Install Ubuntu (Recommended)
 
 Check available distributions:
 
-```powershell
+```bash
 wsl --list --online
 ```
 
-Install Ubuntu 24.04 LTS:
+Install Ubuntu 24.04:
 
-```powershell
+```bash
 wsl --install -d Ubuntu-24.04
 ```
 
@@ -49,34 +60,32 @@ wsl --install -d Ubuntu-24.04
 
 # 👤 4. Create Linux User
 
-On first Ubuntu launch:
+On first launch:
 
-* Create a username (e.g. `hassan`)
-* Set a Linux password (used for sudo commands)
+* Create username (e.g. `hassan`)
+* Set Linux password
 
 ---
 
-# 🖥️ 5. Open WSL (Linux Terminal)
-
-Start WSL:
+# 🖥️ 5. Open WSL
 
 ```bash
 wsl
 ```
 
-Or open Ubuntu directly from Windows.
+or open Ubuntu directly.
 
 ---
 
 # ☁️ 6. Install Azure CLI
 
-Inside Ubuntu (WSL):
+Inside WSL:
 
 ```bash
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
 
-Verify installation:
+Verify:
 
 ```bash
 az version
@@ -84,9 +93,7 @@ az version
 
 ---
 
-# 🔐 7. Login to Azure (MFA Enabled)
-
-Use device login method:
+# 🔐 7. Azure Login (MFA Enabled)
 
 ```bash
 az login --use-device-code
@@ -94,18 +101,17 @@ az login --use-device-code
 
 Steps:
 
-* Open browser: [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin)
-* Enter provided code
-* Complete sign-in with MFA
+* Open [https://microsoft.com/devicelogin](https://microsoft.com/devicelogin)
+* Enter code
+* Login with Azure account
+* Complete MFA
 
 ---
 
 # 🔄 8. Set Active Subscription
 
-Set correct subscription:
-
 ```bash
-az account set --subscription b5650912-09b4-4990-a18c-92c0e07f087b
+az account set --subscription <SUBSCRIPTION_ID>
 ```
 
 Verify:
@@ -117,8 +123,6 @@ az account show
 ---
 
 # 🧱 9. Create Resource Group
-
-Create a container for Azure resources:
 
 ```bash
 az group create \
@@ -136,33 +140,24 @@ az group show --name dev-rg
 
 # 📊 10. Verify Azure Setup
 
-Check account details:
-
 ```bash
 az account show
+az group list --output table
 ```
-
-Expected:
-
-* Active subscription
-* Correct tenant
-* State = Enabled
 
 ---
 
-# 🧠 Final Setup Overview
-
-You now have:
+# 🧠 Setup Summary
 
 ✔ WSL Ubuntu installed
 ✔ Azure CLI installed
 ✔ MFA login configured
-✔ Active Azure subscription
-✔ Resource group created (`dev-rg`)
+✔ Active subscription selected
+✔ Resource group created
 
 ---
 
-# 🚀 Next Steps (Recommended Learning Path)
+# 🚀 Next Steps
 
 ## 🖥️ Infrastructure
 
@@ -172,106 +167,126 @@ You now have:
 
 ## ⚙️ DevOps Tools
 
-* Git + GitHub setup
+* Git + GitHub
 * Terraform (Infrastructure as Code)
 * Docker in WSL
 
 ## 🔐 Advanced Azure
 
 * Service Principal authentication
-* Azure Key Vault (secrets management)
-* CI/CD pipelines (GitHub Actions / Azure DevOps)
+* Azure Key Vault
+* CI/CD pipelines (GitHub Actions)
 
 ---
 
-# 📌 Notes
+# 🔐 11. SSH Setup (GitHub Master Key Setup)
 
-* Always use `westeurope` for best performance in Norway
-* Always stop VMs to avoid unnecessary charges
-* Use service principals for automation (not personal login)
+This ensures passwordless Git access from WSL.
 
 ---
 
-# 🎯 End of Setup Guide
+## 📁 Check Windows SSH keys
 
-This environment is now ready for real Azure DevOps workflows.
-🔐 Azure Login & Environment Setup (WSL)
-This section describes how to correctly authenticate Azure CLI in WSL and ensure the correct tenant and subscription are selected before using Terraform.
+```powershell
+dir $env:USERPROFILE\.ssh
+```
 
-🧭 1. Open WSL (Ubuntu)
-Start your Linux environment:
-wsl
-Navigate to your home directory:
-cd ~
+You should see:
 
-🧹 2. Clear previous Azure sessions (recommended)
-Removes any cached or incorrect subscription/tenant context:
-az account clear
+* `id_rsa`
+* `id_rsa.pub`
 
-🔐 3. Login to Azure using the correct tenant
-Use device code login (recommended for WSL):
-az login --use-device-code --tenant 18ed99ea-84ac-4738-b227-773da6b24321
-Follow the instructions:
+---
 
+## 📂 Copy SSH key into WSL
 
-Open https://microsoft.com/devicelogin
+```bash
+mkdir -p ~/.ssh
+cp /mnt/c/Users/HP/.ssh/id_rsa* ~/.ssh/
+```
 
+---
 
-Enter the provided code
+## 🔐 Fix permissions
 
+```bash
+chmod 600 ~/.ssh/id_rsa
+chmod 644 ~/.ssh/id_rsa.pub
+```
 
-Sign in with your Azure account (hassansamat@hotmail.com)
+---
 
+## 🚀 Start SSH agent
 
-Select the correct subscription: Azure subscription 1
+```bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+```
 
+---
 
+## 🌐 Add SSH key to GitHub
 
-📌 4. Set the active subscription
-After successful login, set the correct subscription:
-az account set --subscription b5650912-09b4-4990-a18c-92c0e07f087b
+Copy key:
 
-✅ 5. Verify active Azure context
-Confirm correct tenant and subscription:
-az account show
-Expected values:
+```bash
+cat ~/.ssh/id_rsa.pub
+```
 
+Add it here:
 
-Tenant ID: 18ed99ea-84ac-4738-b227-773da6b24321
+[GitHub SSH Keys](https://github.com/settings/keys?utm_source=chatgpt.com)
 
+---
 
-Subscription: Azure subscription 1
+## 🔗 Switch Git to SSH
 
+```bash
+git remote set-url origin git@github.com:hassansamatar/devops-lab.git
+```
 
-State: Enabled
+---
 
+## 🧪 Test connection
 
+```bash
+ssh -T git@github.com
+```
 
-📂 6. Verify resource group access
-Ensure your Azure resources are visible:
-az group list --output table
-Expected output includes:
+Expected:
 
+```text
+Hi hassansamatar! You've successfully authenticated.
+```
 
-dev-rg (westeurope)
+---
 
+# 🎯 Final Result
 
+You now have:
 
-🧠 Important Notes
+✔ WSL DevOps environment
+✔ Azure CLI configured
+✔ GitHub SSH authentication
+✔ Terraform-ready workspace
+✔ Clean DevOps structure
 
+---
 
-Always verify the correct tenant before provisioning resources
+# 🚀 Ready for Terraform
 
+Next phase:
 
-Azure CLI is the source of truth (not the portal UI)
+👉 Terraform backend (Azure Storage state)
+👉 First Azure resource deployment
+👉 GitHub Actions CI/CD pipeline
 
+---
 
-Portal may temporarily show no subscriptions if wrong directory is selected
+If you want, I can next help you:
 
+👉 structure your Terraform repo like production (modules/environments/backend)
+👉 or deploy your first real Azure infrastructure step-by-step
+👉 or build full CI/CD pipeline for Terraform
 
-Always confirm subscription context before running Terraform
-
-
-
-🚀 Ready for Terraform
-Once these steps are complete, your environment is fully configured and ready for Infrastructure as Code using Terraform.
+Just say 👍

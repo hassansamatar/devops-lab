@@ -152,11 +152,5 @@ This repository is designed as a hands-on DevOps engineering lab focused on:
 
 ```
 
----
 
-If you want next step, I’d recommend:
 
-👉 **“:contentReference[oaicite:0]{index=0}”**
-
-That’s where your repo starts looking like a **real DevOps platform, not just a project**.
-```

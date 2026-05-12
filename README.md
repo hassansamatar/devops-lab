@@ -1,4 +1,3 @@
-Here is your **clean, professional, fully formatted `README.md`** (copy-ready):
 
 ---
 

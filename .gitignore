@@ -1,6 +1,6 @@
-# -----------------------------
+# ---------------------------------
 # Terraform state files (CRITICAL)
-# -----------------------------
+# ---------------------------------
 *.tfstate
 *.tfstate.*
 *.backup
@@ -8,36 +8,49 @@
 # Terraform crash logs
 crash.log
 
-# Terraform directories (local cache only)
+# Terraform local cache
 .terraform/
+
+# Terraform lock file
+# Usually COMMIT this file for team consistency
+# Uncomment next line only if intentionally ignoring it
+# .terraform.lock.hcl
 
 # CLI config files
 terraform.rc
+terraform.rc.json
 
-# Local override files
+# Override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Sensitive variable files
+# Variable files containing secrets
 *.tfvars
 *.tfvars.json
 
-# -----------------------------
-# IDE / Editor files
-# -----------------------------
+# Exception:
+# Keep example variable files
+!terraform.tfvars.example
+
+# Plan files
+*.tfplan
+tfplan
+
+# ---------------------------------
+# IDE / Editor
+# ---------------------------------
 .vscode/
 .idea/
 
-# -----------------------------
+# ---------------------------------
 # OS files
-# -----------------------------
+# ---------------------------------
 .DS_Store
 Thumbs.db
 
-# -----------------------------
+# ---------------------------------
 # Logs
-# -----------------------------
+# ---------------------------------
 *.log
-.terraform/

@@ -1,10 +1,10 @@
-variable "location" {
-  description = "Azure region for resources"
+variable "resource_group_name" {
+  description = "Azure resource group name"
   type        = string
 }
 
-variable "resource_group_name" {
-  description = "Azure resource group name"
+variable "location" {
+  description = "Azure region"
   type        = string
 }
 
@@ -14,7 +14,7 @@ variable "vnet_name" {
 }
 
 variable "vnet_address_space" {
-  description = "Virtual network address space"
+  description = "VNet address space"
   type        = list(string)
 }
 

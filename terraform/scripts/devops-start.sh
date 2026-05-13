@@ -49,8 +49,8 @@ ls -1 *.tf
 echo ""
 echo "🔐 Checking Azure authentication..."
 
-if ! az account show >/dev/null 2>&1; then
-  echo "⚠️ Azure session not found"
+if ! az account show >/dev/null 2>&1 || ! az account get-access-token >/dev/null 2>&1; then
+  echo "⚠️ Azure session not found or expired"
   echo "🔑 Starting Azure login..."
 
   az login --use-device-code \
@@ -68,7 +68,7 @@ az account show --output table
 echo ""
 echo "⚙️ Initializing Terraform..."
 
-terraform init -upgrade
+terraform init -upgrade -input=false
 
 # =========================================================
 # Terraform Format
@@ -95,7 +95,6 @@ terraform validate
 if command -v tflint >/dev/null 2>&1; then
   echo ""
   echo "🧹 Running TFLint..."
-
   tflint
 else
   echo ""
@@ -107,7 +106,7 @@ fi
 # =========================================================
 
 echo ""
-echo "📦 Terraform state resources:"
+echo "📦 Terraform state resources..."
 
 terraform state list || echo "No resources found in state yet."
 
@@ -118,10 +117,11 @@ terraform state list || echo "No resources found in state yet."
 echo ""
 echo "📊 Generating Terraform plan..."
 
-terraform plan -out=tfplan
+PLAN_FILE="tfplan-$(date +%Y%m%d-%H%M%S)"
+terraform plan -out="$PLAN_FILE"
 
 # =========================================================
-# Terraform Apply Confirmation
+# Apply Confirmation
 # =========================================================
 
 echo ""
@@ -129,19 +129,22 @@ read -p "⚠️ Apply Terraform changes? (yes/no): " CONFIRM
 
 if [[ "$CONFIRM" == "yes" ]]; then
 
+    if [[ ! -f "$PLAN_FILE" ]]; then
+        echo "❌ ERROR: Plan file not found"
+        exit 1
+    fi
+
     echo ""
     echo "🚀 Applying Terraform changes..."
 
-    terraform apply tfplan
+    terraform apply "$PLAN_FILE"
 
     echo ""
     echo "✅ Deployment completed successfully!"
 
 else
-
     echo ""
     echo "❌ Terraform apply cancelled"
-
 fi
 
 # =========================================================

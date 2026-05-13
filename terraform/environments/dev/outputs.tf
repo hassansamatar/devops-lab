@@ -1,9 +1,13 @@
+# =========================================================
+# Resource Group Outputs
+# =========================================================
+
 output "resource_group_name" {
-  description = "Azure Resource Group Name"
+  description = "Name of the Azure Resource Group"
   value       = azurerm_resource_group.dev_rg.name
 }
 
 output "resource_group_location" {
-  description = "Azure Resource Group Location"
+  description = "Azure region where the Resource Group is deployed"
   value       = azurerm_resource_group.dev_rg.location
 }

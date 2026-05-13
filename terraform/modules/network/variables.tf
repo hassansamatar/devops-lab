@@ -1,3 +1,7 @@
+# =========================================================
+# Core Azure configuration
+# =========================================================
+
 variable "resource_group_name" {
   description = "Azure resource group name"
   type        = string
@@ -7,6 +11,10 @@ variable "location" {
   description = "Azure region"
   type        = string
 }
+
+# =========================================================
+# Network configuration
+# =========================================================
 
 variable "vnet_name" {
   description = "Virtual network name"

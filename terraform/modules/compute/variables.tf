@@ -22,17 +22,39 @@ variable "vm_name" {
 variable "vm_size" {
   type        = string
   description = "VM size SKU"
-  default     = "Standard_B1s"
+
+  validation {
+    condition     = can(regex("^Standard_", var.vm_size))
+    error_message = "VM size must start with 'Standard_'"
+  }
 }
 
 variable "admin_username" {
   type        = string
   description = "Admin username for VM"
-  default     = "azureuser"
+
+  validation {
+    condition = !contains(
+      ["admin", "root", "administrator"],
+      lower(var.admin_username)
+    )
+
+    error_message = "Username not allowed for security reasons"
+  }
 }
 
-variable "admin_password" {
+variable "ssh_public_key" {
   type        = string
-  description = "Admin password for VM"
-  sensitive   = true
+  description = "SSH public key for VM authentication"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags applied to compute resources"
+
+  default = {
+    environment = "dev"
+    managed_by  = "terraform"
+    module      = "compute"
+  }
 }

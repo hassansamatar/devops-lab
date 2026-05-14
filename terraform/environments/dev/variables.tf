@@ -1,67 +1,64 @@
-# =========================================================
-# Global / Environment
-# =========================================================
-
 variable "location" {
-  description = "Azure region where all resources will be deployed (e.g., westeurope)"
-  type        = string
+  type = string
 }
 
 variable "resource_group_name" {
-  description = "Name of the Azure Resource Group"
-  type        = string
+  type = string
 }
 
 # =========================================================
-# Networking variables
+# NETWORK
 # =========================================================
 
 variable "vnet_name" {
-  description = "Name of the Virtual Network"
-  type        = string
+  type = string
 }
 
 variable "vnet_address_space" {
-  description = "CIDR address space for the Virtual Network"
-  type        = list(string)
+  type = list(string)
 }
 
 variable "subnet_name" {
-  description = "Name of the subnet inside the Virtual Network"
-  type        = string
+  type = string
 }
 
 variable "subnet_address_prefixes" {
-  description = "CIDR range for the subnet"
-  type        = list(string)
+  type = list(string)
 }
 
 variable "nsg_name" {
-  description = "Name of the Network Security Group"
+  type = string
+}
+
+variable "admin_ip" {
   type        = string
+  description = "Your public IP in CIDR format (e.g. 77.18.33.196/32)"
 }
 
 # =========================================================
-# Compute variables
+# COMPUTE
 # =========================================================
 
 variable "vm_name" {
-  description = "Name of the Virtual Machine"
-  type        = string
+  type = string
 }
 
 variable "vm_size" {
-  description = "Size of the Virtual Machine"
-  type        = string
+  type = string
 }
 
 variable "admin_username" {
-  description = "Admin username for the virtual machine"
-  type        = string
+  type = string
 }
 
-variable "admin_password" {
-  description = "Admin password for the virtual machine"
-  type        = string
-  sensitive   = true
+variable "ssh_public_key" {
+  type = string
+}
+
+# =========================================================
+# TAGS
+# =========================================================
+
+variable "tags" {
+  type = map(string)
 }

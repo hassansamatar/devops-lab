@@ -1,4 +1,19 @@
 # =========================================================
+# Public IP
+# =========================================================
+
+resource "azurerm_public_ip" "public_ip" {
+  name                = "${var.vm_name}-public-ip"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  allocation_method = "Static"
+  sku               = "Standard"
+
+  tags = var.tags
+}
+
+# =========================================================
 # Network Interface
 # =========================================================
 
@@ -11,11 +26,15 @@ resource "azurerm_network_interface" "nic" {
     name                          = "internal"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
+
+    public_ip_address_id = azurerm_public_ip.public_ip.id
   }
+
+  tags = var.tags
 }
 
 # =========================================================
-# Virtual Machine (Linux)
+# Linux Virtual Machine
 # =========================================================
 
 resource "azurerm_linux_virtual_machine" "vm" {
@@ -24,14 +43,14 @@ resource "azurerm_linux_virtual_machine" "vm" {
   resource_group_name = var.resource_group_name
   size                = var.vm_size
 
-  computer_name = var.vm_name
+  computer_name = substr(var.vm_name, 0, 15)
 
   admin_username                  = var.admin_username
   disable_password_authentication = true
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = var.ssh_public_key
   }
 
   network_interface_ids = [
@@ -40,7 +59,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   os_disk {
     caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
+    storage_account_type = "StandardSSD_LRS"
+    disk_size_gb        = 30
   }
 
   source_image_reference {
@@ -50,9 +70,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  tags = {
-    environment = "dev"
-    managed_by  = "terraform"
-    module      = "compute"
-  }
+  tags = var.tags
 }

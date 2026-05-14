@@ -1,13 +1,31 @@
 # =========================================================
-# Resource Group Outputs
+# RESOURCE GROUP
 # =========================================================
 
 output "resource_group_name" {
-  description = "Name of the Azure Resource Group"
-  value       = azurerm_resource_group.dev_rg.name
+  value = azurerm_resource_group.dev_rg.name
 }
 
 output "resource_group_location" {
-  description = "Azure region where the Resource Group is deployed"
-  value       = azurerm_resource_group.dev_rg.location
+  value = azurerm_resource_group.dev_rg.location
+}
+
+# =========================================================
+# VM ACCESS
+# =========================================================
+
+output "vm_public_ip" {
+  value = module.compute.public_ip
+}
+
+output "vm_private_ip" {
+  value = module.compute.private_ip
+}
+
+output "ssh_command" {
+  value = module.compute.ssh_command
+}
+
+output "vm_id" {
+  value = module.compute.vm_id
 }

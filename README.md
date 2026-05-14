@@ -1,4 +1,5 @@
 
+
 ```markdown
 # DevOps Lab — Azure + Terraform Engineering Portfolio
 
@@ -44,29 +45,28 @@ Focus areas:
 
 # 🏗️ Current Architecture (Implemented)
 
-```
+```mermaid
+flowchart TB
+    Developer[👨‍💻 Developer] -->|terraform apply| Terraform[⚙️ Terraform WSL2]
+    Terraform --> RG[📦 Azure Resource Group]
 
-Developer
-↓
-Terraform (WSL2)
-↓
-Azure Resource Group
-↓
-┌──────────────────────────────┐
-│   Network Module             │
-│   - VNet                    │
-│   - Subnet                  │
-│   - NSG                     │
-└──────────────┬──────────────┘
-↓
-┌──────────────────────────────┐
-│   Compute Module             │
-│   - Linux VM                │
-│   - Network Interface       │
-└──────────────┬──────────────┘
-↓
-Azure Cloud Infrastructure
+    subgraph Network_Module [🌐 Network Module]
+        VNet[Virtual Network VNet]
+        Subnet[Subnet]
+        NSG[Network Security Group NSG]
+        VNet --- Subnet
+        NSG -.-> Subnet
+    end
 
+    subgraph Compute_Module [💻 Compute Module]
+        NIC[Network Interface]
+        VM[Linux Virtual Machine]
+        NIC --> VM
+    end
+
+    RG --> Network_Module
+    Network_Module --> Compute_Module
+    Compute_Module --> AzureCloud[☁️ Azure Cloud Infrastructure]
 ```
 
 ---
@@ -74,37 +74,35 @@ Azure Cloud Infrastructure
 # 📁 Repository Structure
 
 ```
-
-devops-lab/
+📁 devops-lab/
 │
-├── docs/
-│   ├── terraform/
-│   ├── azure/
-│   ├── devops/
-│   └── architecture/
+├── 📁 docs/
+│   ├── 📁 terraform/
+│   ├── 📁 azure/
+│   ├── 📁 devops/
+│   └── 📁 architecture/
 │
-├── terraform/
-│   ├── environments/
-│   │   ├── dev/
-│   │   ├── staging/
-│   │   └── prod/
+├── 📁 terraform/
+│   ├── 📁 environments/
+│   │   ├── 📁 dev/
+│   │   ├── 📁 staging/
+│   │   └── 📁 prod/
 │   │
-│   ├── modules/
-│   │   ├── network/
-│   │   ├── compute/
-│   │   ├── storage-account/
-│   │   ├── keyvault/
-│   │   └── monitoring/
+│   ├── 📁 modules/
+│   │   ├── 📁 network/
+│   │   ├── 📁 compute/
+│   │   ├── 📁 storage-account/
+│   │   ├── 📁 keyvault/
+│   │   └── 📁 monitoring/
 │   │
-│   ├── scripts/
-│   └── tests/
+│   ├── 📁 scripts/
+│   └── 📁 tests/
 │
-├── .github/
-│   └── workflows/
+├── 📁 .github/
+│   └── 📁 workflows/
 │
-├── .gitignore
-└── README.md
-
+├── 📄 .gitignore
+└── 📄 README.md
 ```
 
 ---
@@ -231,3 +229,4 @@ This repository demonstrates the ability to:
 
 > Actively evolving DevOps engineering portfolio focused on real-world cloud architecture, automation, and infrastructure design.
 ```
+

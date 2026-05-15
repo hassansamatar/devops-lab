@@ -15,6 +15,7 @@ jobs:
   terraform-plan:
     runs-on: ubuntu-latest
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       TF_IN_AUTOMATION: true
       TF_ENV: dev
       TF_CLOUD: azure

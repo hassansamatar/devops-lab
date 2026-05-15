@@ -1,5 +1,5 @@
 # =========================================================
-# Azure Key Vault
+# AZURE KEY VAULT
 # =========================================================
 
 resource "azurerm_key_vault" "kv" {
@@ -10,12 +10,13 @@ resource "azurerm_key_vault" "kv" {
 
   sku_name = "standard"
 
-  # OPTION A: Access Policy model (NOT RBAC)
-  enable_rbac_authorization = false
+  # RBAC MODE (recommended for DevOps pipelines)
+  enable_rbac_authorization = true
 
-  # Security & lifecycle settings
   soft_delete_retention_days = 7
   purge_protection_enabled    = false
+
+  public_network_access_enabled = true
 
   tags = var.tags
 }

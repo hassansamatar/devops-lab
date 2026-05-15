@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "dev_rg" {
 }
 
 # =========================================================
-# DATA SOURCE (AUTH CONTEXT)
+# DATA SOURCE (CURRENT AZURE CONTEXT)
 # =========================================================
 
 data "azurerm_client_config" "current" {}
@@ -36,7 +36,7 @@ module "network" {
 }
 
 # =========================================================
-# KEY VAULT MODULE
+# KEY VAULT MODULE (RBAC ENABLED INSIDE MODULE)
 # =========================================================
 
 module "keyvault" {
@@ -52,35 +52,14 @@ module "keyvault" {
 }
 
 # =========================================================
-# ACCESS POLICY (MUST EXIST BEFORE SECRETS)
-# =========================================================
-
-resource "azurerm_key_vault_access_policy" "tf" {
-  key_vault_id = module.keyvault.key_vault_id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_client_config.current.object_id
-
-  secret_permissions = [
-    "Get",
-    "List",
-    "Set",
-    "Delete"
-  ]
-}
-
-# =========================================================
-# STORE SSH KEY IN KEY VAULT
+# STORE SSH PUBLIC KEY IN KEY VAULT
 # =========================================================
 
 resource "azurerm_key_vault_secret" "ssh_public_key" {
-  name         = "ssh-public-key"
-  value        = file("~/.ssh/id_rsa.pub")
+  name  = "ssh-public-key"
+  value = file("~/.ssh/id_rsa.pub")
 
   key_vault_id = module.keyvault.key_vault_id
-
-  depends_on = [
-    azurerm_key_vault_access_policy.tf
-  ]
 }
 
 # =========================================================

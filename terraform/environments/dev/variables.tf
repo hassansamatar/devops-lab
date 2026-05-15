@@ -42,7 +42,7 @@ variable "nsg_name" {
 }
 
 variable "admin_ip" {
-  description = "Your public IP in CIDR format (e.g. 77.18.33.196/32)"
+  description = "Allowed SSH IP in CIDR format"
   type        = string
 }
 
@@ -56,17 +56,12 @@ variable "vm_name" {
 }
 
 variable "vm_size" {
-  description = "VM size (Azure SKU)"
+  description = "Azure VM size"
   type        = string
 }
 
 variable "admin_username" {
-  description = "Admin username for VM"
-  type        = string
-}
-
-variable "ssh_public_key" {
-  description = "SSH public key used for VM authentication"
+  description = "VM admin username"
   type        = string
 }
 

@@ -33,10 +33,7 @@ resource "azurerm_network_security_group" "nsg" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  # =====================================================
-  # INBOUND SSH (LOCKED DOWN)
-  # =====================================================
-
+  # SSH access (controlled via admin_ip)
   security_rule {
     name                       = "allow-ssh"
     priority                   = 100
@@ -51,10 +48,7 @@ resource "azurerm_network_security_group" "nsg" {
     destination_address_prefix = "*"
   }
 
-  # =====================================================
-  # OUTBOUND INTERNET ACCESS
-  # =====================================================
-
+  # outbound internet
   security_rule {
     name                       = "allow-outbound"
     priority                   = 200
@@ -73,7 +67,7 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 # =========================================================
-# NSG → SUBNET ASSOCIATION
+# NSG ASSOCIATION
 # =========================================================
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {

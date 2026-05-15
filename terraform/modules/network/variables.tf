@@ -1,5 +1,5 @@
 # =========================================================
-# CORE
+# CORE CONFIGURATION
 # =========================================================
 
 variable "resource_group_name" {
@@ -8,12 +8,12 @@ variable "resource_group_name" {
 }
 
 variable "location" {
-  description = "Azure region (e.g. westeurope)"
+  description = "Azure region"
   type        = string
 }
 
 # =========================================================
-# NETWORK
+# VIRTUAL NETWORK
 # =========================================================
 
 variable "vnet_name" {
@@ -22,9 +22,13 @@ variable "vnet_name" {
 }
 
 variable "vnet_address_space" {
-  description = "VNet CIDR address space"
+  description = "Virtual network CIDR ranges"
   type        = list(string)
 }
+
+# =========================================================
+# SUBNET
+# =========================================================
 
 variable "subnet_name" {
   description = "Subnet name"
@@ -36,6 +40,10 @@ variable "subnet_address_prefixes" {
   type        = list(string)
 }
 
+# =========================================================
+# NETWORK SECURITY GROUP
+# =========================================================
+
 variable "nsg_name" {
   description = "Network Security Group name"
   type        = string
@@ -46,7 +54,7 @@ variable "nsg_name" {
 # =========================================================
 
 variable "admin_ip" {
-  description = "Allowed SSH IP in CIDR format (e.g. 77.18.33.196/32)"
+  description = "Allowed SSH IP in CIDR format"
   type        = string
 }
 
@@ -55,11 +63,12 @@ variable "admin_ip" {
 # =========================================================
 
 variable "tags" {
-  description = "Common tags applied to all resources"
+  description = "Common resource tags"
   type        = map(string)
 
   default = {
     environment = "dev"
     managed_by  = "terraform"
+    module      = "network"
   }
 }

@@ -33,6 +33,7 @@ override.tf.json
 # Exception:
 # Keep example variable files
 !terraform.tfvars.example
+!terraform/environments/dev/ci.tfvars.json
 
 # Plan files
 *.tfplan

@@ -134,6 +134,7 @@ flowchart TB
 
 * github-actions.md
 * azure-devops-pipelines.md
+* pipeline-trigger-cheat-sheet.md
 * git-workflow.md
 * testing-strategy.md
 

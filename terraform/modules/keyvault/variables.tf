@@ -26,6 +26,18 @@ variable "key_vault_allowed_ip_rules" {
   default = []
 }
 
+variable "key_vault_default_action" {
+  type        = string
+  description = "Key Vault firewall default action (Allow or Deny)"
+
+  default = "Deny"
+
+  validation {
+    condition     = contains(["Allow", "Deny"], var.key_vault_default_action)
+    error_message = "key_vault_default_action must be either 'Allow' or 'Deny'."
+  }
+}
+
 # TAGS
 variable "tags" {
   type = map(string)

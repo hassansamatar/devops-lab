@@ -36,8 +36,8 @@ resource "azurerm_key_vault" "kv" {
 
   network_acls {
     bypass         = "AzureServices"
-    default_action = "Deny"
-    ip_rules       = var.key_vault_allowed_ip_rules
+    default_action = var.key_vault_default_action
+    ip_rules       = var.key_vault_default_action == "Deny" ? var.key_vault_allowed_ip_rules : []
   }
 
   # Public endpoint is IP-restricted by firewall rules above.

@@ -47,6 +47,7 @@ module "keyvault" {
   key_vault_name = "${var.vm_name}-kv"
   tenant_id       = data.azurerm_client_config.current.tenant_id
   key_vault_allowed_ip_rules = var.key_vault_allowed_ip_rules
+  key_vault_default_action   = var.key_vault_default_action
 
   tags = var.tags
 }

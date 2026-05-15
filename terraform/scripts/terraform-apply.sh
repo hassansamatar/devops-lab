@@ -32,9 +32,7 @@ fi
 if [ -n "${ARM_CLIENT_ID:-}" ]; then
 	BACKEND_CONFIG_ARGS+=("-backend-config=client_id=${ARM_CLIENT_ID}")
 fi
-if [ -n "${ARM_CLIENT_SECRET:-}" ]; then
-	BACKEND_CONFIG_ARGS+=("-backend-config=client_secret=${ARM_CLIENT_SECRET}")
-fi
+BACKEND_CONFIG_ARGS+=("-backend-config=use_oidc=true")
 BACKEND_CONFIG_ARGS+=("-backend-config=use_azuread_auth=true")
 
 terraform init -input=false "${BACKEND_CONFIG_ARGS[@]}"

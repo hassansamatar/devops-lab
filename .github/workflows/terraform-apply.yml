@@ -31,6 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       TF_IN_AUTOMATION: true
       TF_ENV: ${{ github.event.inputs.environment }}
       TF_CLOUD: ${{ github.event.inputs.cloud }}

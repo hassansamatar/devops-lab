@@ -1,3 +1,5 @@
+
+```markdown
 # DevOps Lab — Azure + Terraform Engineering Portfolio
 
 Enterprise-grade DevOps and Infrastructure-as-Code (IaC) learning repository built to simulate real-world cloud engineering workflows using Microsoft Azure and Terraform.
@@ -140,25 +142,25 @@ flowchart TB
 
 ---
 
-# ✅ Completed Features
+## Completed Features
 
-The following capabilities are implemented and working in the repository:
+The following capabilities are implemented and working in this repository:
 
-✔ WSL2-based DevOps development environment configured
-✔ Azure CLI authentication and Terraform toolchain validated
-✔ Modular Azure infrastructure implemented for network, key vault, and compute
-✔ Remote Terraform state stored in Azure Blob Storage with Azure AD/OIDC auth
-✔ GitHub Actions plan/apply workflows implemented for Terraform delivery
-✔ Validation chain implemented with `terraform fmt`, `terraform validate`, Checkov, and TFLint
-✔ Private Linux VM deployed with no public IP exposure
-✔ Azure Bastion access path working for private VM administration
-✔ Azure Key Vault deployed for secret storage and VM SSH key handling
-✔ RBAC-based Key Vault access enabled
-✔ Key Vault firewall and purge-protection controls enabled
-✔ CI-specific Terraform tfvars flow added for reproducible pipeline runs
-✔ Pipeline hardening completed with action pinning and explicit runtime settings
-✔ Comprehensive pipeline documentation added in `docs/devops/azure-devops-pipelines.md`
-✔ Multi-cloud access contract baseline added for Azure/AWS/GCP mapping
+- [x] WSL2-based DevOps development environment configured  
+- [x] Azure CLI authentication and Terraform toolchain validated  
+- [x] Modular Azure infrastructure implemented (network, Key Vault, compute)  
+- [x] Remote Terraform state stored in Azure Blob Storage with Azure AD / OIDC auth  
+- [x] GitHub Actions plan/apply workflows implemented for Terraform delivery  
+- [x] Validation chain implemented (terraform fmt, terraform validate, Checkov, TFLint)  
+- [x] Private Linux VM deployed with no public IP exposure  
+- [x] Azure Bastion access path working for private VM administration  
+- [x] Azure Key Vault deployed for secret storage and SSH key handling  
+- [x] RBAC-based Key Vault access enabled  
+- [x] Key Vault firewall and purge protection enabled  
+- [x] CI-specific Terraform tfvars flow added for reproducible pipeline runs  
+- [x] Pipeline hardening completed with action pinning and explicit runtime settings  
+- [x] Comprehensive pipeline documentation added (docs/devops/azure-devops-pipelines.md)  
+- [x] Multi-cloud access contract baseline added (Azure / AWS / GCP mapping)
 
 ---
 
@@ -244,4 +246,5 @@ This repository demonstrates the ability to:
 # 📌 Status
 
 > The core Azure + Terraform platform is in place. The repository now serves as a working DevOps portfolio with completed infrastructure, security, and pipeline foundations, plus a roadmap for expansion.
+```
 

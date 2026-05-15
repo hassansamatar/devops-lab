@@ -1,0 +1,58 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    paths:
+      - terraform/**
+      - .github/workflows/terraform-plan.yml
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+    env:
+      TF_IN_AUTOMATION: true
+      TF_ENV: dev
+      TF_CLOUD: azure
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Checkov
+        run: pip install --disable-pip-version-check checkov
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: Make scripts executable
+        run: chmod +x terraform/scripts/*.sh terraform/tests/run-all.sh terraform/tests/validation/validate.sh terraform/tests/lint/run-tflint.sh terraform/tests/security/run-checkov.sh
+
+      - name: Run quality gates
+        run: terraform/tests/run-all.sh "$TF_ENV"
+
+      - name: Generate Terraform plan
+        run: terraform/scripts/terraform-plan.sh "$TF_ENV" "$TF_CLOUD"
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ env.TF_CLOUD }}-${{ env.TF_ENV }}
+          path: terraform/.plans/${{ env.TF_CLOUD }}-${{ env.TF_ENV }}.tfplan

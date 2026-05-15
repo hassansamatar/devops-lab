@@ -1,0 +1,58 @@
+name: Terraform Apply
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target Terraform environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+      cloud:
+        description: "Cloud provider label for plan/apply artifacts"
+        required: true
+        default: "azure"
+        type: choice
+        options:
+          - azure
+          - aws
+          - gcp
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform-apply:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    env:
+      TF_IN_AUTOMATION: true
+      TF_ENV: ${{ github.event.inputs.environment }}
+      TF_CLOUD: ${{ github.event.inputs.cloud }}
+      TF_AUTO_APPROVE: true
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Make scripts executable
+        run: chmod +x terraform/scripts/*.sh terraform/tests/run-all.sh terraform/tests/validation/validate.sh terraform/tests/lint/run-tflint.sh terraform/tests/security/run-checkov.sh
+
+      - name: Run validation before apply
+        run: terraform/tests/validation/validate.sh "$TF_ENV"
+
+      - name: Apply Terraform
+        run: terraform/scripts/terraform-apply.sh "$TF_ENV" "$TF_CLOUD"

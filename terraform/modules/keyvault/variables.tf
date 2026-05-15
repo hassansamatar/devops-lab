@@ -1,57 +1,37 @@
-# =========================================================
-# CORE SETTINGS
-# =========================================================
-
-variable "resource_group_name" {
-  description = "Resource group where Key Vault will be created"
+variable "location" {
   type        = string
+  description = "Azure region"
 }
 
-variable "location" {
-  description = "Azure region (e.g. westeurope)"
+variable "resource_group_name" {
   type        = string
+  description = "Azure resource group name"
+}
+
+# KEY VAULT
+variable "key_vault_name" {
+  type        = string
+  description = "Azure Key Vault name"
 }
 
 variable "tenant_id" {
-  description = "Azure AD tenant ID"
   type        = string
+  description = "Azure tenant ID for Key Vault"
 }
 
-# =========================================================
-# KEY VAULT CONFIG
-# =========================================================
+variable "key_vault_allowed_ip_rules" {
+  type        = list(string)
+  description = "CIDR IP ranges allowed to access Key Vault over public endpoint"
 
-variable "key_vault_name" {
-  description = "Globally unique Key Vault name"
-  type        = string
-
-  validation {
-    condition     = length(var.key_vault_name) <= 24
-    error_message = "Key Vault name must be 24 characters or less."
-  }
+  default = []
 }
 
-# =========================================================
-# RBAC OPTION (FUTURE PROOFING)
-# =========================================================
-
-variable "enable_rbac" {
-  description = "Enable RBAC authorization for Key Vault"
-  type        = bool
-  default     = true
-}
-
-# =========================================================
-# TAGGING
-# =========================================================
-
+# TAGS
 variable "tags" {
-  description = "Tags applied to Key Vault"
-  type        = map(string)
+  type = map(string)
 
   default = {
     environment = "dev"
     managed_by  = "terraform"
-    service     = "keyvault"
   }
 }

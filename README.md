@@ -1,9 +1,3 @@
-
----
-
-# 📄 FINAL `README.md`
-
-````markdown
 # DevOps Lab — Azure + Terraform Engineering Portfolio
 
 Enterprise-grade DevOps and Infrastructure-as-Code (IaC) learning repository built to simulate real-world cloud engineering workflows using Microsoft Azure and Terraform.
@@ -72,7 +66,7 @@ flowchart TB
     RG --> Network_Module
     Network_Module --> Compute_Module
     Compute_Module --> AzureCloud[☁️ Azure Cloud Infrastructure]
-````
+```
 
 ---
 
@@ -150,13 +144,17 @@ flowchart TB
 ✔ WSL2 DevOps environment configured
 ✔ Azure CLI authenticated
 ✔ Terraform installed and validated
-✔ Modular architecture implemented (network + compute)
+✔ Modular architecture implemented (network + compute + Key vault)
 ✔ First VM successfully deployed
-✔ SSH access working
+✔ Bastion-only SSH access working (no VM public IP)
 ✔ Infrastructure state management validated
-✔ CI/CD structure initiated
+✔ CI/CD scripts and workflows implemented (plan/apply + quality gates)
 ✔ Azure Key Vault deployed
 ✔ RBAC-based Key Vault access implemented
+✔ Key Vault firewall rules enabled (default deny + allow list)
+✔ Key Vault purge protection enabled
+✔ Terraform validation, Checkov security scan, and TFLint checks passing
+✔ Multi-cloud access contract baseline added (Azure/AWS/GCP mapping)
 
 ---
 
@@ -164,11 +162,11 @@ flowchart TB
 
 ## 🧱 Infrastructure-as-Code (Terraform)
 
-* Build reusable enterprise modules
-* Expand compute module (VM hardening)
-* Multi-environment strategy (dev/staging/prod)
-* Automated testing & validation pipelines
-* Policy-as-code (governance layer)
+* Expand reusable module coverage for storage/monitoring/resource-group
+* Add private endpoint pattern for Key Vault + private DNS integration
+* Strengthen VM hardening baseline (updates, diagnostics, policy checks)
+* Extend environment strategy (dev/test/prod parity checks)
+* Add policy-as-code enforcement gates (OPA/Checkov policy bundles)
 
 ---
 
@@ -176,18 +174,18 @@ flowchart TB
 
 * VNet segmentation (hub-spoke design)
 * VM scale sets (VMSS)
-* Azure Key Vault integration
-* Azure Bastion integration (planned)
+* Key Vault private endpoint rollout (planned)
+* Bastion subnet NSG hardening with validated Azure-required rules
 * RBAC + least privilege enforcement
 
 ---
 
 ## ⚙️ DevOps Automation
 
-* GitHub Actions CI/CD pipeline
-* Terraform plan on PR / apply on merge
-* Security scanning (tfsec / checkov)
-* Infrastructure drift detection
+* Promote current GitHub Actions plan/apply workflows to protected branch flow
+* Add PR comments with Terraform plan summary and risk highlights
+* Add scheduled drift detection workflow
+* Add cloud matrix strategy for upcoming AWS/GCP environments
 
 ---
 
@@ -197,7 +195,7 @@ flowchart TB
 * Secure remote state storage (Azure Storage)
 * Role-Based Access Control (RBAC) for Key Vault
 * Secure CI/CD pipeline design
-* SSH-only VM authentication (temporary phase)
+* Bastion-only VM access with private networking
 
 ---
 
@@ -242,6 +240,4 @@ This repository demonstrates the ability to:
 # 📌 Status
 
 > Actively evolving DevOps engineering portfolio focused on real-world cloud architecture, automation, and infrastructure design.
-
-```
 

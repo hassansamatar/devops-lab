@@ -37,6 +37,25 @@ output "subnet_address_prefixes" {
 }
 
 # =========================================================
+# BASTION OUTPUTS (NEW)
+# =========================================================
+
+output "bastion_public_ip" {
+  description = "Public IP of Azure Bastion"
+  value       = azurerm_public_ip.bastion_pip.ip_address
+}
+
+output "bastion_host_id" {
+  description = "Azure Bastion Host ID"
+  value       = azurerm_bastion_host.bastion.id
+}
+
+output "bastion_name" {
+  description = "Azure Bastion Host name"
+  value       = azurerm_bastion_host.bastion.name
+}
+
+# =========================================================
 # NETWORK SECURITY GROUP OUTPUTS
 # =========================================================
 
@@ -48,13 +67,4 @@ output "nsg_id" {
 output "nsg_name" {
   description = "Network Security Group name"
   value       = azurerm_network_security_group.nsg.name
-}
-
-# =========================================================
-# SECURITY REFERENCE OUTPUT
-# =========================================================
-
-output "allowed_ssh_ip" {
-  description = "Allowed SSH IP (from tfvars)"
-  value       = var.admin_ip
 }

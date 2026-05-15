@@ -1,0 +1,42 @@
+{
+  "contract_version": "1.0",
+  "workload": {
+    "environment": "dev",
+    "application_name": "devops-lab"
+  },
+  "admin_access": {
+    "mode": "brokered",
+    "ssh_username": "azureuser",
+    "allow_public_vm_ip": false,
+    "session_logging_required": true
+  },
+  "network_baseline": {
+    "workload_cidr": "10.0.0.0/16",
+    "workload_subnet_cidr": "10.0.1.0/24",
+    "admin_subnet_cidr": "10.0.2.0/27"
+  },
+  "provider_mapping": {
+    "azure": {
+      "entry_service": "Azure Bastion",
+      "private_access_control": "NSG"
+    },
+    "aws": {
+      "entry_service": "AWS Systems Manager Session Manager",
+      "private_access_control": "Security Groups"
+    },
+    "gcp": {
+      "entry_service": "IAP TCP forwarding",
+      "private_access_control": "VPC Firewall Rules"
+    }
+  },
+  "pipeline_policy": {
+    "required_checks": [
+      "terraform_fmt",
+      "terraform_validate",
+      "tflint",
+      "checkov",
+      "terraform_plan"
+    ],
+    "block_if_public_vm_ip_detected": true
+  }
+}

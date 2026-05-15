@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "dev_rg" {
 }
 
 # =========================================================
-# DATA SOURCE (CURRENT AZURE CONTEXT)
+# AZURE CONTEXT
 # =========================================================
 
 data "azurerm_client_config" "current" {}
@@ -30,13 +30,12 @@ module "network" {
   subnet_address_prefixes = var.subnet_address_prefixes
 
   nsg_name = var.nsg_name
-  admin_ip = var.admin_ip
 
   tags = var.tags
 }
 
 # =========================================================
-# KEY VAULT MODULE (RBAC ENABLED INSIDE MODULE)
+# KEY VAULT MODULE (FIXED)
 # =========================================================
 
 module "keyvault" {
@@ -46,20 +45,22 @@ module "keyvault" {
   location            = var.location
 
   key_vault_name = "${var.vm_name}-kv"
-  tenant_id      = data.azurerm_client_config.current.tenant_id
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+  key_vault_allowed_ip_rules = var.key_vault_allowed_ip_rules
 
   tags = var.tags
 }
 
 # =========================================================
-# STORE SSH PUBLIC KEY IN KEY VAULT
+# SSH PUBLIC KEY IN KEY VAULT
 # =========================================================
 
 resource "azurerm_key_vault_secret" "ssh_public_key" {
-  name  = "ssh-public-key"
-  value = file("~/.ssh/id_rsa.pub")
-
+  name         = "ssh-public-key"
+  value        = file("~/.ssh/id_rsa.pub")
   key_vault_id = module.keyvault.key_vault_id
+  content_type = "application/x-ssh-public-key"
+  expiration_date = "2030-01-01T00:00:00Z"
 }
 
 # =========================================================

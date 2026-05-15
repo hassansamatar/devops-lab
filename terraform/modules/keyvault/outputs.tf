@@ -21,8 +21,3 @@ output "key_vault_tenant_id" {
   description = "Tenant ID associated with Key Vault"
   value       = azurerm_key_vault.kv.tenant_id
 }
-
-output "key_vault_location" {
-  description = "Azure region where Key Vault is deployed"
-  value       = azurerm_key_vault.kv.location
-}

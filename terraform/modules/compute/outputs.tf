@@ -27,19 +27,10 @@ output "nic_id" {
 }
 
 # =========================================================
-# PUBLIC ACCESS OUTPUTS
-# =========================================================
-
-output "public_ip" {
-  description = "Public IP address of the VM"
-  value       = azurerm_public_ip.public_ip.ip_address
-}
-
-# =========================================================
-# SSH ACCESS HELPER
+# SSH ACCESS (BASTION-READY)
 # =========================================================
 
 output "ssh_command" {
-  description = "SSH command to connect to the VM"
-  value       = "ssh ${var.admin_username}@${azurerm_public_ip.public_ip.ip_address}"
+  description = "SSH command (for Bastion usage or private network)"
+  value       = "ssh ${var.admin_username}@<use-bastion-or-private-ip>"
 }

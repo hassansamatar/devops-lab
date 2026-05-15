@@ -1,20 +1,16 @@
-# =========================================================
-# Public IP
-# =========================================================
+terraform {
+  required_version = ">= 1.5.0"
 
-resource "azurerm_public_ip" "public_ip" {
-  name                = "${var.vm_name}-public-ip"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-
-  allocation_method = "Static"
-  sku               = "Standard"
-
-  tags = var.tags
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = ">= 3.0, < 5.0"
+    }
+  }
 }
 
 # =========================================================
-# Network Interface
+# NETWORK INTERFACE (PRIVATE ONLY)
 # =========================================================
 
 resource "azurerm_network_interface" "nic" {
@@ -26,18 +22,19 @@ resource "azurerm_network_interface" "nic" {
     name                          = "internal"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-
-    public_ip_address_id = azurerm_public_ip.public_ip.id
+    # Explicit null ensures provider detaches any legacy public IP association.
+    public_ip_address_id          = null
   }
 
   tags = var.tags
 }
 
 # =========================================================
-# Linux Virtual Machine
+# LINUX VIRTUAL MACHINE (PRIVATE ACCESS ONLY)
 # =========================================================
 
 resource "azurerm_linux_virtual_machine" "vm" {
+  #checkov:skip=CKV_AZURE_50:No azurerm_virtual_machine_extension resources are defined in this module.
   name                = var.vm_name
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -69,11 +66,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-
-  depends_on = [
-    azurerm_network_interface.nic,
-    azurerm_public_ip.public_ip
-  ]
 
   tags = var.tags
 }

@@ -1,4 +1,3 @@
-Here is a **clean, copy-paste ready `README.md` for your compute module**:
 
 ````markdown
 # 📦 Compute Module (Azure Linux VM)

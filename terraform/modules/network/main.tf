@@ -1,5 +1,5 @@
 # =========================================================
-# Virtual Network
+# VIRTUAL NETWORK
 # =========================================================
 
 resource "azurerm_virtual_network" "vnet" {
@@ -13,7 +13,7 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 # =========================================================
-# Subnet
+# SUBNET
 # =========================================================
 
 resource "azurerm_subnet" "subnet" {
@@ -25,7 +25,7 @@ resource "azurerm_subnet" "subnet" {
 }
 
 # =========================================================
-# Network Security Group
+# NETWORK SECURITY GROUP
 # =========================================================
 
 resource "azurerm_network_security_group" "nsg" {
@@ -33,7 +33,10 @@ resource "azurerm_network_security_group" "nsg" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  # SSH access (restricted)
+  # =====================================================
+  # INBOUND SSH (LOCKED DOWN)
+  # =====================================================
+
   security_rule {
     name                       = "allow-ssh"
     priority                   = 100
@@ -48,7 +51,10 @@ resource "azurerm_network_security_group" "nsg" {
     destination_address_prefix = "*"
   }
 
-  # Outbound internet access
+  # =====================================================
+  # OUTBOUND INTERNET ACCESS
+  # =====================================================
+
   security_rule {
     name                       = "allow-outbound"
     priority                   = 200
@@ -67,10 +73,10 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 # =========================================================
-# NSG Association
+# NSG → SUBNET ASSOCIATION
 # =========================================================
 
-resource "azurerm_subnet_network_security_group_association" "nsg_association" {
+resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {
   subnet_id                 = azurerm_subnet.subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }

@@ -62,6 +62,40 @@ echo "☁️ Active Azure Subscription:"
 az account show --output table
 
 # =========================================================
+# 🔁 Auto‑update admin_ip in terraform.tfvars
+# =========================================================
+
+TFVARS_FILE="terraform.tfvars"
+if [[ -f "$TFVARS_FILE" ]]; then
+    echo ""
+    echo "🌐 Fetching your current public IP address..."
+    CURRENT_IP=$(curl -s ifconfig.me)
+
+    if [[ -z "$CURRENT_IP" ]]; then
+        echo "⚠️ WARNING: Could not detect public IP. Skipping auto‑update."
+    else
+        echo "   Detected IP: $CURRENT_IP"
+        # Build the new line with /32 CIDR
+        NEW_ADMIN_IP="admin_ip = \"${CURRENT_IP}/32\""
+        
+        # Check if admin_ip line already exists
+        if grep -q "^admin_ip[[:space:]]*=" "$TFVARS_FILE"; then
+            # Replace the existing line
+            sed -i "s/^admin_ip[[:space:]]*=.*/${NEW_ADMIN_IP}/" "$TFVARS_FILE"
+        else
+            # Append at the end of the network section (or end of file)
+            echo "$NEW_ADMIN_IP" >> "$TFVARS_FILE"
+        fi
+        echo "✅ Updated $TFVARS_FILE with current IP."
+        # Show the change (optional)
+        grep "^admin_ip" "$TFVARS_FILE"
+    fi
+else
+    echo ""
+    echo "⚠️ $TFVARS_FILE not found. Skipping IP auto‑update."
+fi
+
+# =========================================================
 # Terraform Init
 # =========================================================
 

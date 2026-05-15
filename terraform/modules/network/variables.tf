@@ -1,3 +1,7 @@
+# =========================================================
+# CORE
+# =========================================================
+
 variable "resource_group_name" {
   description = "Azure resource group name"
   type        = string
@@ -7,6 +11,10 @@ variable "location" {
   description = "Azure region (e.g. westeurope)"
   type        = string
 }
+
+# =========================================================
+# NETWORK
+# =========================================================
 
 variable "vnet_name" {
   description = "Virtual network name"
@@ -33,14 +41,23 @@ variable "nsg_name" {
   type        = string
 }
 
+# =========================================================
+# SECURITY
+# =========================================================
+
 variable "admin_ip" {
   description = "Allowed SSH IP in CIDR format (e.g. 77.18.33.196/32)"
   type        = string
 }
 
+# =========================================================
+# TAGGING
+# =========================================================
+
 variable "tags" {
-  description = "Common tags"
+  description = "Common tags applied to all resources"
   type        = map(string)
+
   default = {
     environment = "dev"
     managed_by  = "terraform"

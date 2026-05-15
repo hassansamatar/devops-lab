@@ -1,9 +1,15 @@
+# =========================================================
+# CORE CONFIGURATION
+# =========================================================
+
 variable "location" {
-  type = string
+  description = "Azure region"
+  type        = string
 }
 
 variable "resource_group_name" {
-  type = string
+  description = "Azure resource group name"
+  type        = string
 }
 
 # =========================================================
@@ -11,28 +17,33 @@ variable "resource_group_name" {
 # =========================================================
 
 variable "vnet_name" {
-  type = string
+  description = "Virtual network name"
+  type        = string
 }
 
 variable "vnet_address_space" {
-  type = list(string)
+  description = "VNet address space"
+  type        = list(string)
 }
 
 variable "subnet_name" {
-  type = string
+  description = "Subnet name"
+  type        = string
 }
 
 variable "subnet_address_prefixes" {
-  type = list(string)
+  description = "Subnet CIDR ranges"
+  type        = list(string)
 }
 
 variable "nsg_name" {
-  type = string
+  description = "Network Security Group name"
+  type        = string
 }
 
 variable "admin_ip" {
-  type        = string
   description = "Your public IP in CIDR format (e.g. 77.18.33.196/32)"
+  type        = string
 }
 
 # =========================================================
@@ -40,25 +51,35 @@ variable "admin_ip" {
 # =========================================================
 
 variable "vm_name" {
-  type = string
+  description = "Virtual machine name"
+  type        = string
 }
 
 variable "vm_size" {
-  type = string
+  description = "VM size (Azure SKU)"
+  type        = string
 }
 
 variable "admin_username" {
-  type = string
+  description = "Admin username for VM"
+  type        = string
 }
 
 variable "ssh_public_key" {
-  type = string
+  description = "SSH public key used for VM authentication"
+  type        = string
 }
 
 # =========================================================
-# TAGS
+# TAGGING
 # =========================================================
 
 variable "tags" {
-  type = map(string)
+  description = "Common resource tags"
+  type        = map(string)
+
+  default = {
+    environment = "dev"
+    managed_by  = "terraform"
+  }
 }

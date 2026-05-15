@@ -50,7 +50,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = var.ssh_public_key
+    public_key = trimspace(var.ssh_public_key)
   }
 
   network_interface_ids = [
@@ -69,6 +69,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
+
+  depends_on = [
+    azurerm_network_interface.nic,
+    azurerm_public_ip.public_ip
+  ]
 
   tags = var.tags
 }

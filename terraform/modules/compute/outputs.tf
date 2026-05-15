@@ -1,45 +1,45 @@
 # =========================================================
-# VM Outputs
+# VM OUTPUTS
 # =========================================================
 
 output "vm_id" {
-  value       = azurerm_linux_virtual_machine.vm.id
   description = "Virtual Machine ID"
+  value       = azurerm_linux_virtual_machine.vm.id
 }
 
 output "vm_name" {
-  value       = azurerm_linux_virtual_machine.vm.name
   description = "Virtual Machine name"
+  value       = azurerm_linux_virtual_machine.vm.name
 }
 
 # =========================================================
-# Network Interface Outputs
+# NETWORK OUTPUTS
 # =========================================================
 
 output "private_ip" {
+  description = "Private IP address of the VM"
   value       = azurerm_network_interface.nic.private_ip_address
-  description = "Private IP address"
 }
 
 output "nic_id" {
-  value       = azurerm_network_interface.nic.id
   description = "Network Interface ID"
+  value       = azurerm_network_interface.nic.id
 }
 
 # =========================================================
-# Public IP
+# PUBLIC ACCESS OUTPUTS
 # =========================================================
 
 output "public_ip" {
+  description = "Public IP address of the VM"
   value       = azurerm_public_ip.public_ip.ip_address
-  description = "Public IP address"
 }
 
 # =========================================================
-# SSH Helper
+# SSH ACCESS HELPER
 # =========================================================
 
 output "ssh_command" {
+  description = "SSH command to connect to the VM"
   value       = "ssh ${var.admin_username}@${azurerm_public_ip.public_ip.ip_address}"
-  description = "SSH command"
 }

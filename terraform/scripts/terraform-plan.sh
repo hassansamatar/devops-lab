@@ -11,6 +11,7 @@ WORK_DIR="${TERRAFORM_DIR}/environments/${ENVIRONMENT}"
 PLAN_DIR="${TERRAFORM_DIR}/.plans"
 PLAN_FILE="${PLAN_DIR}/${CLOUD}-${ENVIRONMENT}.tfplan"
 TFVARS_FILE="${WORK_DIR}/terraform.tfvars"
+CI_TFVARS_FILE="${WORK_DIR}/ci.tfvars.json"
 
 if ! command -v terraform >/dev/null 2>&1; then
 	echo "ERROR: terraform is not installed or not on PATH."
@@ -50,6 +51,8 @@ terraform init -input=false "${BACKEND_CONFIG_ARGS[@]}"
 terraform validate
 if [ -f "${TFVARS_FILE}" ]; then
 	terraform plan -input=false -var-file="${TFVARS_FILE}" -out="${PLAN_FILE}"
+elif [ -f "${CI_TFVARS_FILE}" ]; then
+	terraform plan -input=false -var-file="${CI_TFVARS_FILE}" -out="${PLAN_FILE}"
 else
 	terraform plan -input=false -out="${PLAN_FILE}"
 fi

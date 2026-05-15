@@ -9,6 +9,7 @@ CLOUD="${2:-${TF_CLOUD:-azure}}"
 WORK_DIR="${TERRAFORM_DIR}/environments/${ENVIRONMENT}"
 PLAN_FILE="${TERRAFORM_DIR}/.plans/${CLOUD}-${ENVIRONMENT}.tfplan"
 TFVARS_FILE="${WORK_DIR}/terraform.tfvars"
+CI_TFVARS_FILE="${WORK_DIR}/ci.tfvars.json"
 AUTO_APPROVE="${TF_AUTO_APPROVE:-false}"
 
 if ! command -v terraform >/dev/null 2>&1; then
@@ -41,6 +42,8 @@ terraform init -input=false "${BACKEND_CONFIG_ARGS[@]}"
 TFVARS_ARGS=()
 if [ -f "${TFVARS_FILE}" ]; then
 	TFVARS_ARGS+=("-var-file=${TFVARS_FILE}")
+elif [ -f "${CI_TFVARS_FILE}" ]; then
+	TFVARS_ARGS+=("-var-file=${CI_TFVARS_FILE}")
 fi
 
 echo "Running Terraform apply"

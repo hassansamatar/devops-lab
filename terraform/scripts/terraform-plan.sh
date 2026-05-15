@@ -10,6 +10,7 @@ CLOUD="${2:-${TF_CLOUD:-azure}}"
 WORK_DIR="${TERRAFORM_DIR}/environments/${ENVIRONMENT}"
 PLAN_DIR="${TERRAFORM_DIR}/.plans"
 PLAN_FILE="${PLAN_DIR}/${CLOUD}-${ENVIRONMENT}.tfplan"
+TFVARS_FILE="${WORK_DIR}/terraform.tfvars"
 
 if ! command -v terraform >/dev/null 2>&1; then
 	echo "ERROR: terraform is not installed or not on PATH."
@@ -47,6 +48,10 @@ BACKEND_CONFIG_ARGS+=("-backend-config=use_azuread_auth=true")
 terraform fmt -check -recursive "${REPO_ROOT}/terraform"
 terraform init -input=false "${BACKEND_CONFIG_ARGS[@]}"
 terraform validate
-terraform plan -input=false -out="${PLAN_FILE}"
+if [ -f "${TFVARS_FILE}" ]; then
+	terraform plan -input=false -var-file="${TFVARS_FILE}" -out="${PLAN_FILE}"
+else
+	terraform plan -input=false -out="${PLAN_FILE}"
+fi
 
 echo "Plan file generated: ${PLAN_FILE}"

@@ -8,6 +8,7 @@ ENVIRONMENT="${1:-${TF_ENV:-dev}}"
 CLOUD="${2:-${TF_CLOUD:-azure}}"
 WORK_DIR="${TERRAFORM_DIR}/environments/${ENVIRONMENT}"
 PLAN_FILE="${TERRAFORM_DIR}/.plans/${CLOUD}-${ENVIRONMENT}.tfplan"
+TFVARS_FILE="${WORK_DIR}/terraform.tfvars"
 AUTO_APPROVE="${TF_AUTO_APPROVE:-false}"
 
 if ! command -v terraform >/dev/null 2>&1; then
@@ -37,6 +38,11 @@ BACKEND_CONFIG_ARGS+=("-backend-config=use_azuread_auth=true")
 
 terraform init -input=false "${BACKEND_CONFIG_ARGS[@]}"
 
+TFVARS_ARGS=()
+if [ -f "${TFVARS_FILE}" ]; then
+	TFVARS_ARGS+=("-var-file=${TFVARS_FILE}")
+fi
+
 echo "Running Terraform apply"
 echo "  cloud: ${CLOUD}"
 echo "  env:   ${ENVIRONMENT}"
@@ -47,8 +53,8 @@ if [ -f "${PLAN_FILE}" ]; then
 else
 	echo "No saved plan found, applying current configuration."
 	if [ "${AUTO_APPROVE}" = "true" ]; then
-		terraform apply -input=false -auto-approve
+		terraform apply -input=false -auto-approve "${TFVARS_ARGS[@]}"
 	else
-		terraform apply -input=false
+		terraform apply -input=false "${TFVARS_ARGS[@]}"
 	fi
 fi

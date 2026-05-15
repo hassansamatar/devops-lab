@@ -10,7 +10,7 @@ This project demonstrates practical skills in:
 - DevOps engineering practices
 - Security-first cloud architecture
 
-> ⚠️ Status: Active learning + production-style portfolio build
+> ✅ Status: Core platform features completed; documentation and future enhancements continue
 
 ---
 
@@ -139,22 +139,25 @@ flowchart TB
 
 ---
 
-# 🚀 Current Engineering Progress
+# ✅ Completed Features
 
-✔ WSL2 DevOps environment configured
-✔ Azure CLI authenticated
-✔ Terraform installed and validated
-✔ Modular architecture implemented (network + compute + Key vault)
-✔ First VM successfully deployed
-✔ Bastion-only SSH access working (no VM public IP)
-✔ Infrastructure state management validated
-✔ CI/CD scripts and workflows implemented (plan/apply + quality gates)
-✔ Azure Key Vault deployed
-✔ RBAC-based Key Vault access implemented
-✔ Key Vault firewall rules enabled (default deny + allow list)
-✔ Key Vault purge protection enabled
-✔ Terraform validation, Checkov security scan, and TFLint checks passing
-✔ Multi-cloud access contract baseline added (Azure/AWS/GCP mapping)
+The following capabilities are implemented and working in the repository:
+
+✔ WSL2-based DevOps development environment configured
+✔ Azure CLI authentication and Terraform toolchain validated
+✔ Modular Azure infrastructure implemented for network, key vault, and compute
+✔ Remote Terraform state stored in Azure Blob Storage with Azure AD/OIDC auth
+✔ GitHub Actions plan/apply workflows implemented for Terraform delivery
+✔ Validation chain implemented with `terraform fmt`, `terraform validate`, Checkov, and TFLint
+✔ Private Linux VM deployed with no public IP exposure
+✔ Azure Bastion access path working for private VM administration
+✔ Azure Key Vault deployed for secret storage and VM SSH key handling
+✔ RBAC-based Key Vault access enabled
+✔ Key Vault firewall and purge-protection controls enabled
+✔ CI-specific Terraform tfvars flow added for reproducible pipeline runs
+✔ Pipeline hardening completed with action pinning and explicit runtime settings
+✔ Comprehensive pipeline documentation added in `docs/devops/azure-devops-pipelines.md`
+✔ Multi-cloud access contract baseline added for Azure/AWS/GCP mapping
 
 ---
 
@@ -239,5 +242,5 @@ This repository demonstrates the ability to:
 
 # 📌 Status
 
-> Actively evolving DevOps engineering portfolio focused on real-world cloud architecture, automation, and infrastructure design.
+> The core Azure + Terraform platform is in place. The repository now serves as a working DevOps portfolio with completed infrastructure, security, and pipeline foundations, plus a roadmap for expansion.
 

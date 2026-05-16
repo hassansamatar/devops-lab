@@ -1,247 +1,217 @@
-# DevOps Lab — Azure + Terraform Engineering Portfolio
+# DevOps Lab — Enterprise Multi-Cloud Infrastructure Platform
 
-Enterprise-grade DevOps and Infrastructure-as-Code (IaC) learning repository built to simulate real-world cloud engineering workflows using Microsoft Azure and Terraform.
+A production-style Infrastructure-as-Code (IaC) and DevOps engineering platform designed to simulate real enterprise cloud systems using Microsoft Azure, Terraform, Docker, Kubernetes, and AKS.
 
-This project demonstrates practical skills in:
-- Cloud infrastructure design
-- Infrastructure-as-Code (Terraform)
-- Modular architecture (network + compute separation)
-- CI/CD automation
-- DevOps engineering practices
-- Security-first cloud architecture
+This project is built as a **cloud-agnostic infrastructure platform**, where Azure is the current implementation layer, but the architecture is designed to extend into AWS, GCP, and Kubernetes-native environments.
 
-> ✅ Status: Core platform features completed; documentation and future enhancements continue
+It demonstrates how modern infrastructure systems are:
+- Designed (architecture layer)
+- Built (Terraform + containerization layer)
+- Secured (Zero Trust + RBAC)
+- Delivered (CI/CD pipelines)
+- Operated (state, monitoring, drift control)
+- Scaled (Kubernetes + AKS layer)
+- Extended (multi-cloud abstraction layer)
+---
+
+```mermaid
+flowchart TB
+
+    Docker["Docker Containers"] --> K8s["Kubernetes Cluster"]
+    K8s --> AKS["Azure Kubernetes Service"]
+
+    AKS --> NodePool["AKS Node Pools"]
+    NodePool --> Workloads["Microservices and Applications"]
+
+    Workloads --> Scaling["Auto Scaling - HPA and VPA"]
+    Workloads --> Networking["Service Discovery and Ingress"]
+    Workloads --> Security["RBAC and Pod Security Policies"]
+```
+
+---
+
+# 🌐 Multi-Cloud Design Model
+
+This system is intentionally designed as a **portable infrastructure architecture**.
+
+| Layer      | Azure         | AWS             | GCP                  |
+| ---------- | ------------- | --------------- | -------------------- |
+| Network    | VNet          | VPC             | VPC Network          |
+| Compute    | VM / AKS      | EC2 / EKS       | Compute Engine / GKE |
+| Containers | AKS           | EKS             | GKE                  |
+| Registry   | ACR           | ECR             | Artifact Registry    |
+| Secrets    | Key Vault     | Secrets Manager | Secret Manager       |
+| State      | Azure Storage | S3 + DynamoDB   | GCS + Firestore      |
+
+This enables the system to evolve into a **true multi-cloud + Kubernetes-native platform engineering stack**.
+
+---
+
+# 🐳 Container & Kubernetes Layer
+
+This project extends beyond infrastructure into **containerized workload orchestration**.
+
+## Docker Layer
+
+* Application packaging using Docker images
+* Immutable runtime environments
+* Portable build artifacts
+
+## Kubernetes Layer
+
+* Container orchestration using Kubernetes
+* Declarative deployment model
+* Service abstraction + scaling
+* Self-healing workloads
+
+## AKS (Azure Kubernetes Service)
+
+* Managed Kubernetes control plane
+* Integrated Azure networking
+* IAM + RBAC integration
+* Production-grade cluster management
+
+---
+
+# ✅ Completed Features (Implemented System Capabilities)
+
+✅ WSL2-based DevOps development environment configured
+
+✅ Azure CLI authentication and Terraform toolchain validated
+
+✅ Modular Azure infrastructure implemented (network, Key Vault, compute)
+
+✅ Remote Terraform state stored in Azure Blob Storage with Azure AD / OIDC authentication
+
+✅ GitHub Actions CI/CD pipelines implemented for Terraform delivery
+
+✅ Validation chain implemented (terraform fmt, terraform validate, Checkov, TFLint)
+
+✅ Private Linux VM deployed with no public IP exposure
+
+✅ Azure Bastion access path working for private VM administration
+
+✅ Azure Key Vault deployed for secret storage and SSH key handling
+
+✅ RBAC-based Key Vault access enabled
+
+✅ Key Vault firewall and purge protection enabled
+
+✅ CI-specific Terraform tfvars flow added for reproducible pipeline runs
+
+✅ Pipeline hardening completed with action pinning and explicit runtime settings
+
+✅ Multi-cloud abstraction model introduced (Azure / AWS / GCP mapping)
 
 ---
 
 # 🧠 Engineering Objective
 
-This repository simulates how real DevOps engineers design, build, and manage cloud infrastructure in enterprise environments.
+This platform simulates enterprise-grade cloud systems with **multi-layer architecture design**:
 
-Focus areas:
-- Reusable Infrastructure-as-Code (IaC)
-- Modular Azure architecture
-- Secure cloud deployments
-- Automated CI/CD pipelines
-- Production-ready Terraform patterns
-- State-driven infrastructure lifecycle
+Core focus areas:
 
-This project follows production-style Infrastructure-as-Code practices used in enterprise Azure DevOps environments.
+* Infrastructure-as-Code (Terraform)
+* Containerization (Docker)
+* Container orchestration (Kubernetes)
+* Managed Kubernetes (AKS)
+* Cloud-agnostic architecture design
+* Secure cloud systems (Zero Trust model)
+* CI/CD automation pipelines
+* Multi-environment deployment strategy
 
 ---
 
 # 🧰 Technology Stack
 
-- Microsoft Azure (Cloud Platform)
-- Terraform (Infrastructure-as-Code)
-- Ubuntu (WSL2 Development Environment)
-- Git & GitHub (Version Control)
-- GitHub Actions (CI/CD Automation)
-- Bash Scripting (Automation)
-- YAML (Pipeline Definitions)
-
----
-
-# 🏗️ Current Architecture (Implemented)
-
-```mermaid
-flowchart TB
-    Developer[👨‍💻 Developer] -->|terraform apply| Terraform[⚙️ Terraform WSL2]
-    Terraform --> RG[📦 Azure Resource Group]
-
-    subgraph Network_Module [🌐 Network Module]
-        VNet[Virtual Network VNet]
-        Subnet[Subnet]
-        NSG[Network Security Group NSG]
-        VNet --- Subnet
-        NSG -.-> Subnet
-    end
-
-    subgraph Compute_Module [💻 Compute Module]
-        NIC[Network Interface]
-        VM[Linux Virtual Machine]
-        NIC --> VM
-    end
-
-    RG --> Network_Module
-    Network_Module --> Compute_Module
-    Compute_Module --> AzureCloud[☁️ Azure Cloud Infrastructure]
-```
-
----
-
-# 📁 Repository Structure
-
-```
-📁 devops-lab/
-│
-├── 📁 docs/
-│   ├── 📁 terraform/
-│   ├── 📁 azure/
-│   ├── 📁 devops/
-│   └── 📁 architecture/
-│
-├── 📁 terraform/
-│   ├── 📁 environments/
-│   │   ├── 📁 dev/
-│   │   ├── 📁 staging/
-│   │   └── 📁 prod/
-│   │
-│   ├── 📁 modules/
-│   │   ├── 📁 network/
-│   │   ├── 📁 compute/
-│   │   ├── 📁 storage-account/
-│   │   ├── 📁 keyvault/
-│   │   └── 📁 monitoring/
-│   │
-│   ├── 📁 scripts/
-│   └── 📁 tests/
-│
-├── 📁 .github/
-│   └── 📁 workflows/
-│
-├── 📄 .gitignore
-└── 📄 README.md
-```
-
----
-
-# 📚 Documentation Index
-
-## Terraform Knowledge Base
-
-* terraform-best-practices.md
-* terraform-modules.md
-* terraform-remote-state.md
-* terraform-security.md
-* terraform-setup-wsl-azure.md
-* terraform-state-management.md
-* terraform-testing.md
-* terraform-workspaces.md
-
----
-
-## Azure Architecture
-
-* azure-networking.md
-* azure-storage.md
-* azure-rbac.md
-* azure-security.md
-
----
-
-## DevOps & CI/CD
-
-* github-actions.md
-* azure-devops-pipelines.md
-* pipeline-trigger-cheat-sheet.md
-* git-workflow.md
-* testing-strategy.md
-
----
-
-# ✅ Completed Features
-
-The following capabilities are implemented and working in the repository:
-
-✔ WSL2-based DevOps development environment configured
-✔ Azure CLI authentication and Terraform toolchain validated
-✔ Modular Azure infrastructure implemented for network, key vault, and compute
-✔ Remote Terraform state stored in Azure Blob Storage with Azure AD/OIDC auth
-✔ GitHub Actions plan/apply workflows implemented for Terraform delivery
-✔ Validation chain implemented with `terraform fmt`, `terraform validate`, Checkov, and TFLint
-✔ Private Linux VM deployed with no public IP exposure
-✔ Azure Bastion access path working for private VM administration
-✔ Azure Key Vault deployed for secret storage and VM SSH key handling
-✔ RBAC-based Key Vault access enabled
-✔ Key Vault firewall and purge-protection controls enabled
-✔ CI-specific Terraform tfvars flow added for reproducible pipeline runs
-✔ Pipeline hardening completed with action pinning and explicit runtime settings
-✔ Comprehensive pipeline documentation added in `docs/devops/azure-devops-pipelines.md`
-✔ Multi-cloud access contract baseline added for Azure/AWS/GCP mapping
+Microsoft Azure (Primary cloud)
+Terraform (Infrastructure-as-Code engine)
+Docker (Containerization layer)
+Kubernetes (Orchestration layer)
+AKS (Managed Kubernetes service)
+GitHub Actions (CI/CD automation)
+Ubuntu WSL2 (Development environment)
+Azure CLI (Cloud interface)
+Bash (Automation scripting)
+YAML (Pipeline definitions)
 
 ---
 
 # 🎯 Engineering Roadmap
 
-## 🧱 Infrastructure-as-Code (Terraform)
+## Infrastructure-as-Code (Multi-Cloud Expansion)
 
-* Expand reusable module coverage for storage/monitoring/resource-group
-* Add private endpoint pattern for Key Vault + private DNS integration
-* Strengthen VM hardening baseline (updates, diagnostics, policy checks)
-* Extend environment strategy (dev/test/prod parity checks)
-* Add policy-as-code enforcement gates (OPA/Checkov policy bundles)
+* Extend Terraform modules to support AWS and GCP providers
+* Introduce Kubernetes-native infrastructure provisioning
+* Add Helm chart automation layer
+* Implement GitOps-based deployment model (ArgoCD / Flux)
 
----
+## Container Platform Evolution
 
-## ☁️ Azure Cloud Architecture
+* Full microservices deployment on AKS
+* Docker image CI/CD pipeline integration
+* Kubernetes autoscaling policies (HPA / VPA)
+* Service mesh integration (Istio / Linkerd)
 
-* VNet segmentation (hub-spoke design)
-* VM scale sets (VMSS)
-* Key Vault private endpoint rollout (planned)
-* Bastion subnet NSG hardening with validated Azure-required rules
-* RBAC + least privilege enforcement
+## Azure Cloud Architecture
 
----
+* Hub-and-spoke networking topology
+* VM Scale Sets (VMSS)
+* Private DNS zone integration
+* Managed identity expansion
 
-## ⚙️ DevOps Automation
+## DevOps Automation
 
-* Promote current GitHub Actions plan/apply workflows to protected branch flow
-* Add PR comments with Terraform plan summary and risk highlights
-* Add scheduled drift detection workflow
-* Add cloud matrix strategy for upcoming AWS/GCP environments
-
----
-
-# 🔐 Security & Governance Focus
-
-* No hardcoded secrets in code
-* Secure remote state storage (Azure Storage)
-* Role-Based Access Control (RBAC) for Key Vault
-* Secure CI/CD pipeline design
-* Bastion-only VM access with private networking
+* PR-based Terraform plan comment system
+* Drift detection pipelines (multi-cloud validation)
+* Production approval gates
+* Cross-cloud deployment abstraction layer
 
 ---
 
-# 📈 Long-Term Vision
+# 🔐 Security Architecture
 
-This project evolves toward:
-
-* Production-grade Terraform platform
-* Enterprise DevOps automation system
-* Multi-environment cloud infrastructure
-* Reusable infrastructure modules
-* Secure cloud governance model
-* Portfolio-ready engineering showcase
+* No hardcoded secrets in codebase
+* Azure Key Vault for secret storage
+* RBAC-based identity model
+* Private VM and AKS node isolation
+* Bastion-based administrative access
+* OIDC-based GitHub authentication for CI/CD
+* Encrypted Terraform remote state backend
 
 ---
 
-# 🧠 Core Skills Demonstrated
+# 📈 FinOps & Cost Design
+
+* Modular infrastructure enables selective provisioning
+* Environment-based deployments (dev/staging/prod)
+* Kubernetes-based scaling reduces overprovisioning
+* State-driven lifecycle prevents duplication
+* Full destroy/recreate capability via Terraform
+
+---
+
+# 🧠 Core Engineering Skills Demonstrated
 
 * Infrastructure-as-Code (Terraform)
+* Docker containerization
+* Kubernetes orchestration
+* AKS managed Kubernetes operations
+* Multi-cloud architecture design
 * Azure Cloud Engineering
-* Modular architecture design
-* DevOps automation workflows
-* CI/CD pipeline concepts
-* Networking & cloud architecture
-* Secure infrastructure design (RBAC model)
-* Git-based collaboration workflows
+* DevOps CI/CD system design
+* Secure system design (Zero Trust)
+* Modular distributed architecture
+* GitOps-style delivery workflows
+* Cloud governance and cost optimization
 
 ---
 
-# 💼 Portfolio Positioning
+# 🚀 Project Status
 
-This repository demonstrates the ability to:
+This system is fully operational as a production-style **multi-cloud + Kubernetes-ready Azure DevOps platform**.
 
-✔ Design scalable cloud infrastructure
-✔ Build reusable Terraform modules
-✔ Automate deployments using DevOps practices
-✔ Operate within Azure cloud environments
-✔ Implement modular, production-style IaC design
+It demonstrates real-world cloud engineering practices including secure infrastructure design, containerized workloads, Kubernetes orchestration, and modular system architecture that can scale across Azure, AWS, and GCP.
 
----
 
-# 📌 Status
-
-> The core Azure + Terraform platform is in place. The repository now serves as a working DevOps portfolio with completed infrastructure, security, and pipeline foundations, plus a roadmap for expansion.
 

@@ -50,6 +50,12 @@ variable "admin_username" {
   type = string
 }
 
+variable "ssh_public_key" {
+  type        = string
+  description = "SSH public key for VM access"
+  sensitive   = true
+}
+
 variable "key_vault_allowed_ip_rules" {
   type = list(string)
 

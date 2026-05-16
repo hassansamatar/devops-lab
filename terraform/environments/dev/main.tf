@@ -58,7 +58,7 @@ module "keyvault" {
 
 resource "azurerm_key_vault_secret" "ssh_public_key" {
   name         = "ssh-public-key"
-  value        = trimspace(file("${path.module}/ssh_public_key.pub"))
+  value        = trimspace(var.ssh_public_key)
   key_vault_id = module.keyvault.key_vault_id
   content_type = "application/x-ssh-public-key"
   expiration_date = "2030-01-01T00:00:00Z"

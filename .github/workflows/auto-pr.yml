@@ -20,7 +20,7 @@ jobs:
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@70a41aba780001da042a86e7a8c0e042dac4cbf3 # v5
+        uses: peter-evans/create-pull-request@v7
         with:
           commit-message: Update from dev branch
           title: 'Automated PR: Merge dev into main'

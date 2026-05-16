@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "dev_rg" {
 }
 
 # =========================================================
-# AZURE CONTEXT -IODC implemeneted+ dev
+# AZURE CONTEXT (OIDC)
 # =========================================================
 
 data "azurerm_client_config" "current" {}
@@ -35,7 +35,7 @@ module "network" {
 }
 
 # =========================================================
-# KEY VAULT MODULE (FIXED)
+# KEY VAULT MODULE (RBAC ONLY)
 # =========================================================
 
 module "keyvault" {
@@ -44,24 +44,10 @@ module "keyvault" {
   resource_group_name = azurerm_resource_group.dev_rg.name
   location            = var.location
 
-  key_vault_name             = "${var.vm_name}-kv"
-  tenant_id                  = data.azurerm_client_config.current.tenant_id
-  key_vault_allowed_ip_rules = var.key_vault_allowed_ip_rules
-  key_vault_default_action   = var.key_vault_default_action
+  key_vault_name = "${var.vm_name}-kv"
+  tenant_id      = data.azurerm_client_config.current.tenant_id
 
   tags = var.tags
-}
-
-# =========================================================
-# SSH PUBLIC KEY IN KEY VAULT
-# =========================================================
-
-resource "azurerm_key_vault_secret" "ssh_public_key" {
-  name            = "ssh-public-key"
-  value           = trimspace(file("${path.module}/ssh_public_key.pub"))
-  key_vault_id    = module.keyvault.key_vault_id
-  content_type    = "application/x-ssh-public-key"
-  expiration_date = "2030-01-01T00:00:00Z"
 }
 
 # =========================================================
@@ -80,7 +66,8 @@ module "compute" {
   vm_size        = var.vm_size
   admin_username = var.admin_username
 
-  ssh_public_key = azurerm_key_vault_secret.ssh_public_key.value
+  # SSH removed from Key Vault dependency
+  ssh_public_key = file("${path.module}/ssh_public_key.pub")
 
   tags = var.tags
 }

@@ -1,5 +1,5 @@
 # =========================================================
-# KEY VAULT OUTPUTS
+# KEY VAULT OUTPUTS (RBAC MODE)
 # =========================================================
 
 output "key_vault_id" {
@@ -13,7 +13,7 @@ output "key_vault_name" {
 }
 
 output "key_vault_uri" {
-  description = "Key Vault URI (vault endpoint)"
+  description = "Key Vault endpoint URI"
   value       = azurerm_key_vault.kv.vault_uri
 }
 

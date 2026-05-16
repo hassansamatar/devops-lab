@@ -50,23 +50,6 @@ variable "admin_username" {
   type = string
 }
 
-variable "key_vault_allowed_ip_rules" {
-  type = list(string)
-
-  default = []
-}
-
-variable "key_vault_default_action" {
-  type = string
-
-  default = "Deny"
-
-  validation {
-    condition     = contains(["Allow", "Deny"], var.key_vault_default_action)
-    error_message = "key_vault_default_action must be either 'Allow' or 'Deny'."
-  }
-}
-
 # =========================================================
 # TAGGING
 # =========================================================

@@ -1,6 +1,12 @@
 name: Terraform Plan
 
 on:
+  push:
+    branches:
+      - dev
+    paths:
+      - terraform/**
+      - .github/workflows/terraform-plan.yml
   pull_request:
     paths:
       - terraform/**

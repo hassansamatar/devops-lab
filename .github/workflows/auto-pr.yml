@@ -1,0 +1,41 @@
+name: Auto PR on Dev Push
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@70a41aba780001da042a86e7a8c0e042dac4cbf3 # v5
+        with:
+          commit-message: Update from dev branch
+          title: 'Automated PR: Merge dev into main'
+          body: |
+            ## Automated Pull Request
+            This PR was automatically created from a push to the dev branch.
+            
+            Please review the changes and approve to merge.
+          branch: dev-to-main-${{ github.run_number }}
+          delete-branch: false
+          base: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log PR Details
+        if: steps.cpr.outputs.pull-request-number
+        run: |
+          echo "Pull Request Number: ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL: ${{ steps.cpr.outputs.pull-request-url }}"

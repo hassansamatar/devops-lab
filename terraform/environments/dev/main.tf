@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "dev_rg" {
 }
 
 # =========================================================
-# AZURE CONTEXT -IODC implemeneted.
+# AZURE CONTEXT -IODC implemeneted+ dev
 # =========================================================
 
 data "azurerm_client_config" "current" {}

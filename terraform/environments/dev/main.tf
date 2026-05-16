@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "dev_rg" {
 }
 
 # =========================================================
-# AZURE CONTEXT
+# AZURE CONTEXT -implementing IODC for deb branch
 # =========================================================
 
 data "azurerm_client_config" "current" {}

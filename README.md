@@ -14,6 +14,7 @@ It demonstrates how modern infrastructure systems are:
 - Extended (multi-cloud abstraction layer)
 ---
 
+
 ```mermaid
 flowchart TB
 

@@ -23,7 +23,7 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     # Explicit null ensures provider detaches any legacy public IP association.
-    public_ip_address_id          = null
+    public_ip_address_id = null
   }
 
   tags = var.tags
@@ -57,7 +57,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
-    disk_size_gb        = 30
+    disk_size_gb         = 30
   }
 
   source_image_reference {

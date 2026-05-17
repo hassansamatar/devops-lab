@@ -19,25 +19,6 @@ variable "tenant_id" {
   description = "Azure tenant ID for Key Vault"
 }
 
-variable "key_vault_allowed_ip_rules" {
-  type        = list(string)
-  description = "CIDR IP ranges allowed to access Key Vault over public endpoint"
-
-  default = []
-}
-
-variable "key_vault_default_action" {
-  type        = string
-  description = "Key Vault firewall default action (Allow or Deny)"
-
-  default = "Deny"
-
-  validation {
-    condition     = contains(["Allow", "Deny"], var.key_vault_default_action)
-    error_message = "key_vault_default_action must be either 'Allow' or 'Deny'."
-  }
-}
-
 # TAGS
 variable "tags" {
   type = map(string)
@@ -45,5 +26,6 @@ variable "tags" {
   default = {
     environment = "dev"
     managed_by  = "terraform"
+    project     = "devops-lab"
   }
 }

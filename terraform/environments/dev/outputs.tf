@@ -21,11 +21,6 @@ output "vm_private_ip" {
   value       = module.compute.private_ip
 }
 
-output "ssh_command" {
-  description = "SSH command (REMOVE after Bastion migration)"
-  value       = module.compute.ssh_command
-}
-
 output "vm_id" {
   description = "Azure Virtual Machine resource ID"
   value       = module.compute.vm_id
@@ -46,7 +41,7 @@ output "key_vault_uri" {
 }
 
 # =========================================================
-# BASTION OUTPUTS (NEW - IMPORTANT)
+# BASTION OUTPUTS (PRIMARY ACCESS METHOD)
 # =========================================================
 
 output "bastion_name" {
